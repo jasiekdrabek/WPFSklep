@@ -1,0 +1,88 @@
+﻿<Window x:Class="Sklep.OknoKlienta"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sklep"
+        mc:Ignorable="d"
+        Title="OknoKlienta" Height="342.459" Width="789.559" Closed="Window_Closed">
+    <Grid>
+        <TabControl HorizontalAlignment="Left" Height="303" Margin="0,10,0,0" VerticalAlignment="Top" Width="784">
+            <TabItem Header="Informacje">
+                <Grid Background="#FFE5E5E5" Margin="0,0,0.4,0.4">
+                    <Label x:Name="LInfo" Content="Jesteś zalogowany jako:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="282"/>
+                    <Button Content="Wyloguj" HorizontalAlignment="Left" Margin="693,10,0,0" VerticalAlignment="Top" Width="75" Click="Window_Closed"/>
+                    <Button Content="Usuń konto" HorizontalAlignment="Left" Margin="693,58,0,0" VerticalAlignment="Top" Width="75" Click="Button_Usuń"/>
+                    <Label Content="Zmiana hasła:" FontSize="24" HorizontalAlignment="Left" Margin="10,46,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Podaj stare hasło:" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top"/>
+                    <TextBox Name="TBStareHasło" HorizontalAlignment="Left" Height="23" Margin="10,125,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                    <Label Content="Podaj nowe haslo:" HorizontalAlignment="Left" Margin="10,153,0,0" VerticalAlignment="Top"/>
+                    <TextBox Name="TBNoweHasło" HorizontalAlignment="Left" Height="23" Margin="10,184,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                    <Button Content="Zmień hasło" HorizontalAlignment="Left" Margin="10,224,0,0" VerticalAlignment="Top" Width="75" Click="Button_Zmień_Hasło"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Saldo">
+                <Grid Background="#FFE5E5E5">
+                    <Label Content="Dostępne środki:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <Label Name="LSaldo" Content="{Binding Saldo,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="114,10,0,0" VerticalAlignment="Top"/>
+                    <TextBox Name="TBDodaj" HorizontalAlignment="Left" Height="23" Margin="10,87,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                    <Button Content="Dodaj" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" Width="75" Click="Button_Dodaj"/>
+                    <Label Content="Wpisz ile pieniędzy chcesz dodać:" HorizontalAlignment="Left" Margin="10,56,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Wpisz ile pieniędzy chcesz zabrać:" HorizontalAlignment="Left" Margin="218,56,0,0" VerticalAlignment="Top"/>
+                    <TextBox Name="TBZabierz" HorizontalAlignment="Left" Height="23" Margin="218,87,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                    <Button Content="Zabierz" HorizontalAlignment="Left" Margin="218,130,0,0" VerticalAlignment="Top" Width="75" Click="Button_Zabierz"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Nowe zamówienie">
+                <Grid Background="#FFE5E5E5">
+                    <ComboBox Name="CBNoweZamówienie" HorizontalAlignment="Left"   VerticalAlignment="Top"  Margin="60,93,0,0" />
+                    <TextBox Name="TBZamowienie" HorizontalAlignment="Left" Height="26" Margin="10,93,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="50"/>
+                    <Label Content="Wybierz produkt i wpisz ilość:" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top" Width="168" Grid.ColumnSpan="2"/>
+                    <Button Content="Dodaj do zamównienia" Click="Button_Dodaj_Do_Zamówienia" HorizontalAlignment="Left" Margin="10,153,0,0" VerticalAlignment="Top" Width="132" Grid.ColumnSpan="2"/>
+                    <ScrollViewer  HorizontalAlignment="Left" Margin="201,51,0,0" VerticalAlignment="Top" Width="249" Height="142">
+                        <StackPanel Name="SPZamowienie">
+                        </StackPanel>
+                    </ScrollViewer>
+                    <Button Content="Złóż zamówienie" Click="Button_Złóż_Zamówienie" HorizontalAlignment="Left" Margin="252,245,0,0" VerticalAlignment="Top" Width="158"/>
+                    <Button Content="Usuń zaznaczone" Click="Button_Usuń_Z_Zamówienia" HorizontalAlignment="Left" Margin="252,209,0,0" VerticalAlignment="Top" Width="158"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Zamówienia">
+                <Grid>
+                    <ListView Name="LBAktualne"  HorizontalAlignment="Left" Height="100" Margin="25,77,0,0" VerticalAlignment="Top" Width="140">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Nazwa" DisplayMemberBinding="{Binding Path= Produkty.Nazwa}"/>
+                                <GridViewColumn Header="Ilość" DisplayMemberBinding="{Binding Path= IlośćKupionegoProduktu}"/>
+                                <GridViewColumn Header="Cena" DisplayMemberBinding="{Binding Path=Cena}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <ListView Name="LBZrealizowane" HorizontalAlignment="Left" Height="100" Margin="225,77,0,0" VerticalAlignment="Top" Width="247">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Nazwa produktu" DisplayMemberBinding="{Binding Path= Produkty.Nazwa}"/>
+                                <GridViewColumn Header="Ilość" DisplayMemberBinding="{Binding Path= IlośćKupionegoProduktu}"/>
+                                <GridViewColumn Header="Cena" DisplayMemberBinding="{Binding Path=Cena}"/>
+                                <GridViewColumn Header="Pracownik " DisplayMemberBinding="{Binding Path=Pracownicy.Login}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <ListView Name="LBOdrzucone" HorizontalAlignment="Left" Height="100" Margin="505,77,0,0" VerticalAlignment="Top" Width="247">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Nazwa produktu" DisplayMemberBinding="{Binding Path= Produkty.Nazwa}"/>
+                                <GridViewColumn Header="Ilość" DisplayMemberBinding="{Binding Path= IlośćKupionegoProduktu}"/>
+                                <GridViewColumn Header="Cena" DisplayMemberBinding="{Binding Path=Cena}"/>
+                                <GridViewColumn Header="Pracownik " DisplayMemberBinding="{Binding Path=Pracownicy.Login}" />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Label Content="W trakcie:" HorizontalAlignment="Left" Margin="25,32,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Zrealizowane:" HorizontalAlignment="Left" Margin="225,32,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Odrzucone:" HorizontalAlignment="Left" Margin="505,32,0,0" VerticalAlignment="Top"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
