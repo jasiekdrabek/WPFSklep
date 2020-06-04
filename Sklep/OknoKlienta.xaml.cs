@@ -54,7 +54,7 @@ namespace Sklep
         double saldo;
         public OknoKlienta(Klienci użytkownik, MainWindow window)
         {
-            this.DataContext = this;
+            DataContext = this;
             InitializeComponent();
             WTrakcie = new ObservableCollection<Transakcje>();
             Zrealizowane = new ObservableCollection<Transakcje>();
@@ -73,9 +73,9 @@ namespace Sklep
             LSaldo.Content = Saldo.ToString();
             using (var context = new MyContext())
             {
-                var a = (from st in context.Produktys
+                var produkty = (from st in context.Produktys
                          select st);
-                foreach (var produkt in a)
+                foreach (var produkt in produkty)
                 {
                     var item = new ComboBoxItem
                     {
@@ -84,8 +84,8 @@ namespace Sklep
                     CBNoweZamówienie.Items.Add(item);
                 }
                 CBNoweZamówienie.SelectedIndex = 0;
-                var b = (from st in context.Transakcjes where st.Klienci.Id == Użytkownik.Id select st);
-                foreach( var transakcja in b)
+                var transakcje = (from st in context.Transakcjes where st.Klienci.Id == Użytkownik.Id select st);
+                foreach( var transakcja in transakcje)
                 {
                     transakcja.Klienci = context.Kliencis.First(x => x.Id == Użytkownik.Id);
                     transakcja.Pracownicy= context.Pracownicys.FirstOrDefault(x => x.Id == 
@@ -139,7 +139,14 @@ namespace Sklep
                 double liczba = double.Parse(TBZabierz.Text);
                 if (liczba >= 0)
                 {
-                    Saldo -= liczba;
+                    if (liczba <= Saldo)
+                    {
+                        Saldo -= liczba;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Za dużo chcesz zabrać z konta");
+                    }
                 }
                 else
                 {

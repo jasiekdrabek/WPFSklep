@@ -23,7 +23,8 @@
                         <Button Content="Zatrudnij" Click="Button_Zatrudnij" HorizontalAlignment="Left" Margin="31,104,0,0" VerticalAlignment="Top" Width="75"/>
                         <Label Content="Login:" HorizontalAlignment="Left" Margin="31,41,0,0" VerticalAlignment="Top"/>
                         <TextBox Name="TBZatrudnij" HorizontalAlignment="Left" Height="23" Margin="69,45,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-                        <Button Content="Exportuj dane" Click="Button_Exportuj" HorizontalAlignment="Left" Margin="31,245,0,0" VerticalAlignment="Top" Width="75"/>
+                        <Button Content="Exportuj transakcje" Click="Button_Exportuj" HorizontalAlignment="Left" Margin="31,245,0,0" VerticalAlignment="Top" Width="107"/>
+                        <Button Content="Importuj klientów" Click="Button_Importuj" HorizontalAlignment="Left" Margin="157,245,0,0" VerticalAlignment="Top" Width="107"/>
                         <Label Content="Stanowisko:" HorizontalAlignment="Left" Margin="31,72,0,0" VerticalAlignment="Top"/>
                         <ComboBox Name="CBZatrudnij" SelectedIndex="0" HorizontalAlignment="Left" Margin="108,75,0,0" VerticalAlignment="Top" Width="120">
                             <ComboBoxItem Content="Sprzedawca"/>
@@ -31,7 +32,7 @@
                         </ComboBox>
                         <Label Content="Zwolnij pracownika:" HorizontalAlignment="Left" Margin="31,140,0,0" VerticalAlignment="Top"/>
                         <ComboBox Name="CBZwolnij" HorizontalAlignment="Left" Margin="31,171,0,0" VerticalAlignment="Top" Width="120"/>
-                        <Button Content="Zwolnij" Click="Button_Zwolnij" HorizontalAlignment="Left" Margin="31,198,0,0" VerticalAlignment="Top" Width="75"/>
+                        <Button Content="Zwolnij" Click="Button_Zwolnij" HorizontalAlignment="Left" Margin="31,198,0,0" VerticalAlignment="Top" Width="107"/>
                     </Grid>
                 </Grid>
             </TabItem>

@@ -715,13 +715,13 @@ namespace Sklep
             {
                 using (MyContext context = new MyContext())
                 {
-                    var a = (from st in context.Kliencis
+                    var istniejacyklienci = (from st in context.Kliencis
                              where st.Login == TBLoginR.Text
                              select st);
-                    var b = (from st in context.Pracownicys
+                    var istniejacypracownicy = (from st in context.Pracownicys
                              where st.Login == TBLoginR.Text
                              select st);
-                    if (a.Count() == 0 && b.Count() == 0)
+                    if (istniejacyklienci.Count() == 0 && istniejacypracownicy.Count() == 0)
                     {
                         var klient = new Klienci
                         {
@@ -788,13 +788,13 @@ namespace Sklep
                 }
                 else
                 {
-                    var c = (from st in context.Kliencis
+                    var istniejacyklienci = (from st in context.Kliencis
                              where st.Login == TBLogin.Text
                              select st);
-                    var d = (from st in context.Pracownicys
+                    var istniejacypracownicy = (from st in context.Pracownicys
                              where st.Login == TBLogin.Text
                              select st);
-                    if (c.Count() == 0 && d.Count() == 0)
+                    if (istniejacyklienci.Count() == 0 && istniejacypracownicy.Count() == 0)
                     {
                         MessageBox.Show("Podano błędny login");
                     }

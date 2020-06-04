@@ -53,16 +53,16 @@ namespace Sklep
             LInfo.Content += Użytkownik.Login;
             using (var context = new MyContext())
             {
-                var a = context.Transakcjes.Where(x => x.StatusTransakcji == "W trakcie realizacji");
-                foreach (var transakcja in a)
+                var transakcjewtrakcie = context.Transakcjes.Where(x => x.StatusTransakcji == "W trakcie realizacji");
+                foreach (var transakcja in transakcjewtrakcie)
                 {
                     transakcja.Klienci = context.Kliencis.FirstOrDefault(x => x.Id == context.Transakcjes.FirstOrDefault(y => y.Id == transakcja.Id).Klienci.Id);
                     transakcja.Produkty = context.Produktys.FirstOrDefault(x => x.Id == context.Transakcjes.FirstOrDefault(y => y.Id == transakcja.Id).Produkty.Id);
                     Zamówienia.Add(transakcja);
                 }
-                var b = (from st in context.Produktys
+                var produkty = (from st in context.Produktys
                          select st);
-                foreach (var produkt in b)
+                foreach (var produkt in produkty)
                 {
                     ProduktyWSklepie.Add(produkt);
 
@@ -72,8 +72,8 @@ namespace Sklep
                     };
                     CBDostawa.Items.Add(item);
                 }
-                var c = (from st in context.Pracownicys where st.Stanowisko != "Właściciel" select st);
-                foreach (var pracownik in c)
+                var pracownicyaleniewlasciciel = (from st in context.Pracownicys where st.Stanowisko != "Właściciel" select st);
+                foreach (var pracownik in pracownicyaleniewlasciciel)
                 {
                     var item = new ComboBoxItem
                     {
@@ -129,30 +129,30 @@ namespace Sklep
         {
             try
             {
+                var wybranezamowienie = Zamówienia[LBZamówienia.SelectedIndex];
                 ObservableCollection<Produkty> temp = new ObservableCollection<Produkty>();
                 foreach (var p in ProduktyWSklepie)
                 {
                     temp.Add(p);
                 }
                 ProduktyWSklepie.Clear();
-                var a = Zamówienia[LBZamówienia.SelectedIndex];
                 using (var context = new MyContext())
                 {
-                    if (context.Produktys.FirstOrDefault(x => x.Id == a.Produkty.Id).Ilość >=
-                        context.Transakcjes.FirstOrDefault(x => x.Id == a.Id).IlośćKupionegoProduktu)
+                    if (context.Produktys.FirstOrDefault(x => x.Id == wybranezamowienie.Produkty.Id).Ilość >=
+                        context.Transakcjes.FirstOrDefault(x => x.Id == wybranezamowienie.Id).IlośćKupionegoProduktu)
                     {
-                        if (context.Kliencis.FirstOrDefault(x => x.Id == a.Klienci.Id).IlośćPieniędzy >=
-                        context.Transakcjes.FirstOrDefault(y => y.Id == a.Id).Cena)
+                        if (context.Kliencis.FirstOrDefault(x => x.Id == wybranezamowienie.Klienci.Id).IlośćPieniędzy >=
+                        context.Transakcjes.FirstOrDefault(y => y.Id == wybranezamowienie.Id).Cena)
                         {
-                            var produkt = context.Produktys.FirstOrDefault(x => x.Id == a.Produkty.Id);
-                            produkt.Ilość -= context.Transakcjes.FirstOrDefault(x => x.Id == a.Id).IlośćKupionegoProduktu;
-                            var klient = context.Kliencis.FirstOrDefault(x => x.Id == a.Klienci.Id);
-                            klient.IlośćPieniędzy -= context.Transakcjes.FirstOrDefault(x => x.Id == a.Id).Cena;
-                            var transakcja = context.Transakcjes.FirstOrDefault(x => x.Id == a.Id);
+                            var produkt = context.Produktys.FirstOrDefault(x => x.Id == wybranezamowienie.Produkty.Id);
+                            produkt.Ilość -= context.Transakcjes.FirstOrDefault(x => x.Id == wybranezamowienie.Id).IlośćKupionegoProduktu;
+                            var klient = context.Kliencis.FirstOrDefault(x => x.Id == wybranezamowienie.Klienci.Id);
+                            klient.IlośćPieniędzy -= context.Transakcjes.FirstOrDefault(x => x.Id == wybranezamowienie.Id).Cena;
+                            var transakcja = context.Transakcjes.FirstOrDefault(x => x.Id == wybranezamowienie.Id);
                             transakcja.Pracownicy = context.Pracownicys.First(x => x.Id == Użytkownik.Id);
                             transakcja.StatusTransakcji = "Zrealizowana";
                             context.SaveChanges();
-                            temp[context.Produktys.FirstOrDefault(x => x.Id == a.Produkty.Id).Id - 1].Ilość = produkt.Ilość;
+                            temp[context.Produktys.FirstOrDefault(x => x.Id == wybranezamowienie.Produkty.Id).Id - 1].Ilość = produkt.Ilość;
                             foreach (var t in temp)
                             {
                                 ProduktyWSklepie.Add(t);
@@ -169,7 +169,7 @@ namespace Sklep
                         MessageBox.Show("Nie mamy tyle sztuk tego produktu");
                     }
                 }
-                Zamówienia.Remove(a);
+                Zamówienia.Remove(wybranezamowienie);
             }
             catch (Exception ex)
             {
@@ -180,15 +180,15 @@ namespace Sklep
         {
             try
             {
-                var a = Zamówienia[LBZamówienia.SelectedIndex];
+                var wybranezamowienie = Zamówienia[LBZamówienia.SelectedIndex];
                 using (var context = new MyContext())
                 {
-                    var transakcja = context.Transakcjes.FirstOrDefault(x => x.Id == a.Id);
+                    var transakcja = context.Transakcjes.FirstOrDefault(x => x.Id == wybranezamowienie.Id);
                     transakcja.Pracownicy = context.Pracownicys.First(x => x.Id == Użytkownik.Id);
                     transakcja.StatusTransakcji = "Odrzucona";
                     context.SaveChanges();
                 }
-                Zamówienia.Remove(a);
+                Zamówienia.Remove(wybranezamowienie);
             }
             catch (Exception ex)
             {
@@ -217,7 +217,7 @@ namespace Sklep
                     }
                     else
                     {
-                        MessageBox.Show("Nie mamy tyle towaru");
+                        MessageBox.Show("Głupi czy co?");
                     }
                 }
             }
@@ -283,8 +283,8 @@ namespace Sklep
         {
             using(var context = new MyContext())
             {
-                var a = (from st in context.Pracownicys where st.Login == TBZatrudnij.Text select st);
-                if (a.Count() == 0)
+                var pracownicy = (from st in context.Pracownicys where st.Login == TBZatrudnij.Text select st);
+                if (pracownicy.Count() == 0)
                 {
                     var pracownik = new Pracownicy
                     {
@@ -329,56 +329,79 @@ namespace Sklep
         }
         private void Button_Exportuj(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Plik csv(*.csv)|*.csv";
-            if (saveFileDialog.ShowDialog() == true)
+            SaveFileDialog plikdozapisu = new SaveFileDialog();
+            plikdozapisu.Filter = "Plik csv(*.csv)|*.csv";
+            if (plikdozapisu.ShowDialog() == true)
             {
                 using (var context = new MyContext())
                 {
-                    var r = (from st in context.Transakcjes where st.StatusTransakcji != "W trakcie realizacji" select st);
-                    List<string> listaKhasło = new List<string>();
-                    List<string> listPhasło = new List<string>();
-                    foreach (var transakcja in r)
+                    var danedozapisu = (from st in context.Transakcjes  select st);
+                    foreach (var transakcja in danedozapisu)
                     {
                         transakcja.Pracownicy = context.Pracownicys.FirstOrDefault(x => x.Id == context.Transakcjes.FirstOrDefault(y => y.Id == transakcja.Id).Pracownicy.Id);
                         transakcja.Klienci = context.Kliencis.FirstOrDefault(x => x.Id == context.Transakcjes.FirstOrDefault(y => y.Id == transakcja.Id).Klienci.Id);
                         transakcja.Produkty = context.Produktys.FirstOrDefault(x => x.Id == context.Transakcjes.FirstOrDefault(y => y.Id == transakcja.Id).Produkty.Id);
                         int len = transakcja.Klienci.Hasło.Length;
-                        var Khasło =transakcja.Klienci.Hasło;
-                        listaKhasło.Add(Khasło);
-                        var Phasło = transakcja.Pracownicy.Hasło;
-                        listPhasło.Add(Phasło);
                         transakcja.Klienci.Hasło = "";
                         for (int i = 0; i < len; i++)
                         {
                             transakcja.Klienci.Hasło += "*";
                         }
-                        len = transakcja.Pracownicy.Hasło.Length;
-                        transakcja.Pracownicy.Hasło = "";
-                        for (int i = 0; i < len; i++)
+                        if (transakcja.Pracownicy != null)
                         {
-                            transakcja.Pracownicy.Hasło += "*";
+                            len = transakcja.Pracownicy.Hasło.Length;
+                            transakcja.Pracownicy.Hasło = "";
+                            for (int i = 0; i < len; i++)
+                            {
+                                transakcja.Pracownicy.Hasło += "*";
+                            }
                         }
                     }
-                    using (var w = new StreamWriter(saveFileDialog.FileName))
+                    /*var danedozapisu = (from st in context.Kliencis select st);
+                    foreach(var klient in danedozapisu)
+                    {
+                        int len = klient.Hasło.Length;
+                        klient.Hasło = "";
+                        for (int i = 0; i < len; i++)
+                        {
+                            klient.Hasło += "*";
+                        }
+                    }*/
+                    using (var w = new StreamWriter(plikdozapisu.FileName))
                     using (var csv = new CsvWriter(w, CultureInfo.InvariantCulture))
                     {
-                        csv.WriteRecords(r);
+                        csv.WriteRecords(danedozapisu);
                     }
-                    int j = 0;
-                    foreach(var transakcja in r)
-                    {
-                        var klient = context.Kliencis.FirstOrDefault(x => x.Id ==
-                        context.Transakcjes.FirstOrDefault(y => y.Klienci.Id == transakcja.Klienci.Id).Klienci.Id);
-                        klient.Hasło = listaKhasło[j];
-                        var pracownik = context.Pracownicys.FirstOrDefault(x => x.Id ==
-                        context.Transakcjes.FirstOrDefault(y => y.Pracownicy.Id == transakcja.Pracownicy.Id).Pracownicy.Id);
-                        pracownik.Hasło = listPhasło[j];
-                        j += 1;
-                    }
-                    context.Transakcjes.RemoveRange(r);
-                    context.SaveChanges();
                 }
+            }
+        }
+        private void Button_Importuj(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                OpenFileDialog plikdoodczytu = new OpenFileDialog();
+                plikdoodczytu.Filter = "Plik csv(*.csv)|*.csv";
+                if(plikdoodczytu.ShowDialog() == true)
+                {
+                    using (var reader = new StreamReader(plikdoodczytu.FileName))
+                    using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                    {
+                        var klienci = csv.GetRecords<Klienci>();
+                        using (var context = new MyContext())
+                        {
+                            foreach (var klient in klienci)
+                            {
+                                //context.Kliencis.Attach(klient);
+                                context.Kliencis.Add(klient);
+                            }
+                            context.SaveChanges();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }
