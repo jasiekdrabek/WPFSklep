@@ -27,6 +27,7 @@ namespace Sklep
         {
             using (var context = new MyContext())
             {
+                
                 /*var transakcje = (from st in context.Transakcjes select st);
                 foreach (var transakcja in transakcje)
                 {
@@ -53,13 +54,15 @@ namespace Sklep
                     context.Pracownicys.Remove(pracownik);
                 }
                 context.SaveChanges();
-
+                */
+                /*
                 var właściciel = new Pracownicy
                 {
                     Login = "JanDrabekBoss",
                     Hasło = "Admin1",
                     Stanowisko = "Właściciel",
-                    Wynagrodzenie = 1000000
+                    Wynagrodzenie = 1000000,
+                    Email="a"
                 };
                 context.Pracownicys.Add(właściciel);
                 var kasjerka = new Pracownicy
@@ -67,19 +70,21 @@ namespace Sklep
                     Login = "PaniKasia",
                     Hasło = "PaniKasia",
                     Stanowisko = "Sprzedawca",
-                    Wynagrodzenie = 2000
+                    Wynagrodzenie = 2000,
+                    Email="aa"
                 };
                 var dostawca = new Pracownicy
                 {
                     Login = "PanMietek",
                     Hasło = "PanMietek",
                     Stanowisko = "Dostawca",
-                    Wynagrodzenie = 3500
+                    Wynagrodzenie = 3500,
+                    Email="aaa"
                 };
                 context.Pracownicys.Add(kasjerka);
                 context.Pracownicys.Add(dostawca);
                 context.SaveChanges();
-                /*
+                
                 List<Produkty> produkty = new List<Produkty>();
                 var Adżwan = new Produkty{
                     Nazwa = "Adżwan",
@@ -704,8 +709,8 @@ namespace Sklep
                 };
                 produkty.Add(Zieleangielskie);
                 context.Produktys.AddRange(produkty);
-                context.SaveChanges();*/
-
+                context.SaveChanges();
+                */
                 InitializeComponent();
             }
         }
