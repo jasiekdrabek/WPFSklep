@@ -25,7 +25,6 @@ namespace Sklep
 
         public MainWindow()
         {
-            // change
             using (var context = new MyContext())
             {
                 
